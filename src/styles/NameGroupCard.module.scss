@@ -1,0 +1,68 @@
+
+.NameGroupCard {
+    display: flex;
+    flex-direction: column;
+    height: 95%;
+    width: 500px;
+    border: 2px solid #393830;
+    border-radius: 10px;
+}
+
+.standardName {
+    font-size: 30px;
+    font-weight: 400;
+    margin: 10px;
+    margin-top: 20px;
+    flex: 1 1 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.variations {
+    margin: 10px;
+    flex: 1 1 80%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.variation {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 5px;
+}
+
+.actionButtons {
+    flex: 1 1 10%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.mergeButton, .doneButton {
+    flex: 1 1 10%;
+    display: flex;
+    justify-content: center;
+}
+
+.button {
+    margin: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    width: 100%;
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50; /* Green */
+    color: white;
+    transition: 0.3s;
+}
+
+.button:hover {
+    background-color: #ddd;
+}

@@ -1,0 +1,22 @@
+[
+    {
+        "resolved": false,
+        "std_name": "MOROSINI",
+        "name_variations": ["MOROSINI", "MOROSIN", "MOROSINE", "MORROSINI", "MOROSINI", "MOROSIN", "MOROSINE", "MORROSINI", "MOROSINI", "MOROSIN", "MOROSINE", "MORROSINI", "MOROSINI", "MOROSIN", "MOROSINE", "MORROSINI"]
+    },
+    {
+        "resolved": false,
+        "std_name": "GIUSTINIANI",
+        "name_variations": ["GIUSTINIANI", "GIUSTINIAN", "GIUSTINIANE", "GIUSINIANI"]
+    },
+    {
+        "resolved": false,
+        "std_name": "MOCENIGO",
+        "name_variations": ["MOCENIGO", "MOCENIGHE", "MOCCENIGO"]
+    },
+    {
+        "resolved": false,
+        "std_name": "*UNGROUPED*",
+        "name_variations": ["CIAO", "COME", "STAI"]
+    }
+]

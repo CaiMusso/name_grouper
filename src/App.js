@@ -1,12 +1,12 @@
 
 import React from 'react';
 import './App.css';
-import FamilyNameGrouper from './FamilyNameGrouper';
+import NameGrouper from './NameGrouper';
 
 function App() {
   return (
     <div className="App">
-      <FamilyNameGrouper />
+      <NameGrouper />
     </div>
   );
 }
