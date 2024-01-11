@@ -13,7 +13,15 @@ export function NavigationBar(props) {
                     className={styles.card}
                     onClick={() => props.setDisplayedIndex(index)}
                 >
-                    { group['std_name'] }
+                    <div className={styles.card_text}> 
+                        <div style={{width: '100px', fontSize: '12px'}}> 
+                            { index }
+                        </div>
+                        
+                        <div className={styles.card_std_name}> 
+                            { group['std_name'].toUpperCase() }
+                        </div>
+                    </div>
                 </div>
             ))}
         </div>

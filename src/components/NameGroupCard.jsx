@@ -18,7 +18,7 @@ export function NameGroupCard(props) {
 
     return (
         <div className={styles.NameGroupCard}>
-            <div className={styles.standardName}>{group.std_name}</div>
+            <div className={styles.standardName}>{group.std_name.toUpperCase()}</div>
             <div style={{marginLeft: '10px'}}> There are <b>{numberOfVariations}</b> different variations.</div>
             <div className={styles.variations}>
                 {group.name_variations.map((variation, index) => (
