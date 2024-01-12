@@ -103,14 +103,14 @@ const groupsFilteredPopUp = groups.slice(0, idx).concat(groups.slice(idx + 1))
               groups={groupsFilteredPopUp}
               onSelectGroup={(group) => {
                 let operation =
-                  selectedAll || selectedVariations.length == numberOfVariations
+                  selectedAll || selectedVariations.length === numberOfVariations
                     ? "move_all"
                     : "move_selected";
                 moveNamesToOtherGroup(operation, group, selectedVariations);
               }}
               onCreateNewGroup={(newGroup) => {
                 let operation =
-                  selectedAll || selectedVariations.length == numberOfVariations
+                  selectedAll || selectedVariations.length === numberOfVariations
                     ? "move_new_all"
                     : "move_new_selected";
 

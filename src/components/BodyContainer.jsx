@@ -29,7 +29,7 @@ export function BodyContainer(props) {
     if (displayedIndex !== currentIndex) {
       setCurrentIndex(displayedIndex);
     }
-  }, [displayedIndex]);
+  }, [displayedIndex, currentIndex]);
 
   function setDoneToGroup(done) {
     let groupsToDownloadCopy = [...groupsToDownload];
