@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "../styles/FileUploader.module.scss";
 
 export function FileUploader(props) {
   const { setGroupsFromFile } = props;
+  const [showJSONFormat, setShowJSONFormat] = useState(false);
 
   const handleFileChange = (event) => {
     const reader = new FileReader();
@@ -20,8 +21,7 @@ export function FileUploader(props) {
         }
 
         console.log("File content:", content);
-        setGroupsFromFile(content)
-
+        setGroupsFromFile(content);
       } catch (error) {
         console.error("Error reading JSON:", error);
         alert(
@@ -56,17 +56,33 @@ export function FileUploader(props) {
 
   return (
     <div className={styles.fileUploader}>
-      <div
-        className={styles.title}
-      >
-        Welcome to the NameGrouper WebApp !
-      </div>
+      <div className={styles.title}>Welcome to the NameGrouper WebApp !</div>
       <div className={styles.specification}>
-        <div className={styles.subtitle}>
-        Upload your json file here. Here below is how your file formatting should look like:
-        </div>
-        <pre className={styles.codeBlock}>
-          {`[
+        {!showJSONFormat && (
+          <div
+            className={styles.openCodeBlockButton}
+            onClick={() => setShowJSONFormat(true)}
+          >
+            {" "}
+            OPEN JSON FORMATTING INSTRUCTIONS
+          </div>
+        )}
+        {showJSONFormat && (
+          <div
+            className={styles.openCodeBlockButton}
+            onClick={() => setShowJSONFormat(false)}
+          >
+            {" "}
+            CLOSE JSON FORMATTING INSTRUCTIONS
+          </div>
+        )}
+        {showJSONFormat && (
+          <>
+            <div className={styles.subtitle}>
+              Find here below how your file formatting should look like:
+            </div>
+            <pre className={styles.codeBlock}>
+              {`[
   {
     "resolved": false,
     "std_name": "morosini",
@@ -87,8 +103,12 @@ export function FileUploader(props) {
     "name_variations": ["turchetta", "cittolin"]
   }
 ]`}
-        </pre>
+            </pre>
+          </>
+        )}
       </div>
+
+      <div className={styles.subtitle}>Upload your json file here.</div>
       <div className={styles.uploadButton}>
         <button
           className={styles.button}
