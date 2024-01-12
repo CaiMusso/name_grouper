@@ -44,19 +44,15 @@ export function BodyContainer(props) {
       (group) => group.std_name === "*ungrouped*"
     );
 
-    console.log("passed 1")
     groupsToDownloadCopy[groupIndex].name_variations = [
       ...groupsToDownloadCopy[groupIndex].name_variations,
       ...variations,
     ];
 
-    console.log("passed 2")
-
     groupsToDownloadCopy[currentIndex].name_variations = groupsToDownloadCopy[
       currentIndex
     ].name_variations.filter((name) => !variations.includes(name));
 
-    console.log("passed 3")
     if (operation === "ungroup_all") {
       groupsToDownloadCopy = [
         ...groupsToDownloadCopy.slice(0, currentIndex),
