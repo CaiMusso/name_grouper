@@ -3,7 +3,7 @@ import styles from "../styles/BodyContainer.module.scss";
 import { NameGroupCard } from "./NameGroupCard";
 
 export function BodyContainer(props) {
-  const { groups, displayedIndex, setGroupsToParent } = props;
+  const { groups, displayedIndex, setGroupsToParent, updateIndexToParent } = props;
 
   const [groupsToDownload, setGroupsToDownload] = useState(groups);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -15,13 +15,13 @@ export function BodyContainer(props) {
 
   const handlePrevious = () => {
     if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
+      updateIndexToParent(currentIndex - 1);
     }
   };
 
   const handleNext = () => {
     if (currentIndex < groupsToDownload.length - 1) {
-      setCurrentIndex(currentIndex + 1);
+      updateIndexToParent(currentIndex + 1);
     }
   };
 
@@ -41,18 +41,22 @@ export function BodyContainer(props) {
   function ungroup(operation, variations) {
     let groupsToDownloadCopy = [...groupsToDownload];
     const groupIndex = groupsToDownloadCopy.findIndex(
-      (group) => group.std_name === "ungrouped"
+      (group) => group.std_name === "*ungrouped*"
     );
 
+    console.log("passed 1")
     groupsToDownloadCopy[groupIndex].name_variations = [
       ...groupsToDownloadCopy[groupIndex].name_variations,
       ...variations,
     ];
 
+    console.log("passed 2")
+
     groupsToDownloadCopy[currentIndex].name_variations = groupsToDownloadCopy[
       currentIndex
     ].name_variations.filter((name) => !variations.includes(name));
 
+    console.log("passed 3")
     if (operation === "ungroup_all") {
       groupsToDownloadCopy = [
         ...groupsToDownloadCopy.slice(0, currentIndex),

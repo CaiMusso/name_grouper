@@ -84,7 +84,7 @@ const groupsFilteredPopUp = groups.slice(0, idx).concat(groups.slice(idx + 1))
                   alert("Please select at least one variation");
                 } else {
                   if (
-                    selectedVariations.length === group.name_variations.length
+                    selectedVariations.length === numberOfVariations
                   ) {
                     ungroup("ungroup_all", selectedVariations);
                     return;
