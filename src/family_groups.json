@@ -3038,5 +3038,10 @@
     "resolved": false,
     "std_name": "baldo",
     "name_variations": ["baldo", "baldi"]
+  },
+  {
+    "resolved": false,
+    "std_name": "ungrouped",
+    "name_variations": []
   }
 ]

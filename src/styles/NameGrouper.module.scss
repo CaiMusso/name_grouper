@@ -1,55 +1,64 @@
-
 body {
-    background-color: white;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
+  background-color: white;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
 
-.header, .footer {
-    background-color: #C0D7BB;
-    padding: 10px;
-    border-radius: 3px;
+.header,
+.footer {
+  background-color: #c0d7bb;
+  padding: 10px;
+  border-radius: 3px;
 }
 
 .header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    align-content: center;
-    flex-wrap: nowrap;
-    height: 7%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  flex-wrap: nowrap;
+  height: 7%;
 }
 
 .footer {
-    height: 25%;
-    bottom: 0;
+  height: 25%;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
 }
 
 .body {
-    height: 60%;
-    padding: 10px;
-    margin: 10px;
+  height: 60%;
+  padding: 10px;
+  margin: 10px;
 }
 
 .button {
-    padding: 10px;
-    margin: 10px;
-    border-radius: 10px;
-    border: none;
-    background-color: #4CAF50; /* Green */
-    color: white;
-    transition: 0.3s;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 10px;
+  border: none;
+  background-color: #4caf50; 
+  color: white;
+  transition: 0.3s;
 }
 
 .button:hover {
-    background-color: #45a049;
+  background-color: #45a049;
 }
 
 .navigation_bar {
-    height: 100%;
-    overflow-x: scroll;
-    // Add your styles here
+  width: 100%;
+  overflow-x: scroll;
+}
+
+.copyright{
+  margin: 10px;
+  margin-top: 30px;
+  font-size: 11px;
 }
