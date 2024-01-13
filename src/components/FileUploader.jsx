@@ -21,7 +21,31 @@ export function FileUploader(props) {
         }
 
         console.log("File content:", content);
-        setGroupsFromFile(content);
+
+        const hasUngrouped = content.some(
+          (item) => item.std_name === "*ungrouped*"
+        );
+
+        if (!hasUngrouped) {
+          content.push({
+            resolved: false,
+            std_name: "*ungrouped*",
+            name_variations: [],
+          });
+        }
+
+        content.push({
+          resolved: false,
+          std_name: "*unrelevant*",
+          name_variations: [],
+        });
+
+        const groupsDataset = content.map((group, index) => {
+          return { id: index, ...group, links_to_verify: [] };
+        });
+
+        setGroupsFromFile(groupsDataset);
+        
       } catch (error) {
         console.error("Error reading JSON:", error);
         alert(

@@ -3,7 +3,7 @@ import styles from "../styles/GroupListPopUp.module.scss";
 import { IoMdClose } from "react-icons/io";
 
 export function GroupListPopUp(props) {
-  const { groups, onSelectGroup, onCreateNewGroup, onCloseButtonPressed } =
+  const { groups, showCreateNew, onSelectGroup, onCreateNewGroup, onCloseButtonPressed } =
     props;
   const groupsSortedUpper = groups
     .map((group) => ({ ...group, std_name: group.std_name.toUpperCase() }))
@@ -39,7 +39,7 @@ export function GroupListPopUp(props) {
             key={index}
             className={styles.groupItem}
             onClick={() => {
-                onSelectGroup(group.std_name)
+                onSelectGroup(group)
                 onCloseButtonPressed();
             }}
           >
@@ -54,11 +54,11 @@ export function GroupListPopUp(props) {
           className={styles.newGroupName}
           placeholder="Enter standard name for new group"
           value={newStdName}
-          onChange={(e) => setNewStdName(e.target.value)}
+          onChange={(e) => setNewStdName(e.target.value.toLowerCase())}
         />
       )}
 
-      {!visibilityNewGroupName && (
+      {!visibilityNewGroupName && showCreateNew && (
         <button
           className={styles.newGroupButton}
           onClick={() => {

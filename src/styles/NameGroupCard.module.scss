@@ -1,7 +1,7 @@
 .NameGroupCard {
   display: flex;
   flex-direction: column;
-  height: 95%;
+  height: 98%;
   width: 500px;
   border: 2px solid #393830;
   border-radius: 10px;
@@ -11,7 +11,6 @@
   font-size: 30px;
   font-weight: 400;
   margin: 10px;
-  margin-top: 20px;
   flex: 1 1 10%;
   display: flex;
   align-items: center;
@@ -40,11 +39,10 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  margin-bottom: 15px;
 }
 
 .mergeButton,
-.doneButton {
+.buttonContainer {
   flex: 1 1 10%;
   display: flex;
   justify-content: center;
@@ -67,6 +65,23 @@
   background-color: #439d46;
 }
 
+.buttonSecondary {
+  margin: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #4caf50;
+  border-radius: 5px;
+  background-color: white;
+  color: #4caf50;
+  transition: 0.3s;
+}
+
+.buttonSecondary:hover {
+  font-weight: 600;
+}
+
 .indexContainer {
   margin: 10px;
   margin-bottom: 0;
@@ -75,4 +90,22 @@
   flex-wrap: nowrap;
   justify-content: space-between;
   align-items: center;
+}
+
+.newGroupName {
+  padding: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 70%;
+}
+
+.groupNameContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  flex-wrap: nowrap;
 }

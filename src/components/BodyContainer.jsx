@@ -69,7 +69,7 @@ export function BodyContainer(props) {
       (group) => group.std_name === groupName
     );
 
-    if (operation.includes("_new_")) {
+    if (operation.includes("new_")) {
       const newGroup = {
         resolved: false,
         std_name: groupName,
@@ -86,7 +86,7 @@ export function BodyContainer(props) {
         currentIndex
       ].name_variations.filter((name) => !variations.includes(name));
 
-      if (operation === "move_new_all") {
+      if (operation === "new_move_all") {
         groupsToDownloadCopy = [
           ...groupsToDownloadCopy.slice(0, currentIndex),
           ...groupsToDownloadCopy.slice(currentIndex + 1),
@@ -133,6 +133,13 @@ export function BodyContainer(props) {
             numberOfVariations={
               groupsToDownload[currentIndex].name_variations.length
             }
+            
+            changeGroupName={(newName) => {
+              let groupsToDownloadCopy = [...groupsToDownload];
+              groupsToDownloadCopy[currentIndex].std_name = newName;
+              setGroups(groupsToDownloadCopy);
+            }}
+
             moveNamesToOtherGroup={(operation, groupName, variations) =>
               moveNamesToOtherGroup(
                 operation,
@@ -141,6 +148,23 @@ export function BodyContainer(props) {
               )
             }
             ungroup={(operation, variations) => ungroup(operation, variations)}
+            linkWithOtherGroup={(idLinkTo) => {
+              let groupsToDownloadCopy = [...groupsToDownload];
+              
+              const toLinkIdx = groupsToDownloadCopy.findIndex(group => group.id === idLinkTo)
+              if (toLinkIdx !== -1) {
+                groupsToDownloadCopy[currentIndex].links_to_verify.push({
+                  "id": groupsToDownloadCopy[toLinkIdx].id,
+                  "std_name": groupsToDownloadCopy[toLinkIdx].std_name,
+                })
+                groupsToDownloadCopy[toLinkIdx].links_to_verify.push({
+                  "id": groupsToDownloadCopy[currentIndex].id,
+                  "std_name": groupsToDownloadCopy[currentIndex].std_name,
+                })
+
+                setGroups(groupsToDownloadCopy);
+              }
+            }}
             saveDone={(done) => setDoneToGroup(done)}
           />
         )}

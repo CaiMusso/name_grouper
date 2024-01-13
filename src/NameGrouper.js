@@ -3,6 +3,7 @@ import styles from "./styles/NameGrouper.module.scss";
 import { NavigationBar } from "./components/NavigationBar";
 import { BodyContainer } from "./components/BodyContainer";
 import { FileUploader } from "./components/FileUploader";
+import { LuDownload } from "react-icons/lu";
 
 const NameGrouper = () => {
   const [displayedIndex, setDisplayedIndex] = useState(0);
@@ -10,6 +11,15 @@ const NameGrouper = () => {
   const [showUploadFile, setShowUploadFile] = useState(true);
 
   const handleDownloadJson = () => {
+    groupsToDownload.map((group) => {
+      if (group.links_to_verify.length > 0) {
+        group.links_to_verify = [
+          "!! note: use 'id' to link, std_name could have been changed during the process",
+          ...group.links_to_verify,
+        ];
+      }
+    });
+
     const jsonStr = JSON.stringify(groupsToDownload, null, 2);
     const blob = new Blob([jsonStr], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -42,6 +52,7 @@ const NameGrouper = () => {
         <h1 style={{ fontSize: "26px" }}>FAMILY NAME GROUPER</h1>
         <button className={styles.button} onClick={handleDownloadJson}>
           DOWNLOAD FILE
+          <LuDownload style={{ margin: "1px", marginLeft: "10px" }} />
         </button>
       </header>
 

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styles from "../styles/NameGroupCard.module.scss";
 import { GroupListPopUp } from "./GroupListPopUp";
+import { CiEdit } from "react-icons/ci";
+import { FaCheck } from "react-icons/fa";
 
 export function NameGroupCard(props) {
   const {
@@ -8,21 +10,33 @@ export function NameGroupCard(props) {
     idx,
     group,
     numberOfVariations,
+    changeGroupName,
     moveNamesToOtherGroup,
     ungroup,
-    saveDone
+    linkWithOtherGroup,
+    saveDone,
   } = props;
 
   const [done, setDone] = useState(group.resolved);
-  const [selectedAll, setSelectedAll] = useState(false);
   const [selectedVariations, setSelectedVariations] = useState([]);
-  const [visilibityGroupListPopUp, setVisilibityGroupListPopUp] =
-    useState(false);
-const groupsFilteredPopUp = groups.slice(0, idx).concat(groups.slice(idx + 1))
+  const [visilibityGroupListPopUp, setVisilibityGroupListPopUp] = useState(false);
+  const [operation, setOperation] = useState(null);
 
+  const groupsFilteredPopUp = groups
+    .slice(0, idx)
+    .concat(groups.slice(idx + 1));
+
+  const [groupName, setGroupName] = useState(group.std_name);
+  const [editPressed, setEditPressed] = useState(false);
+
+  /* RESET when group changes */
   useEffect(() => {
     setSelectedVariations([]);
-    setDone(group.resolved)
+    setOperation(null);
+    setDone(group.resolved);
+    setGroupName(group.std_name);
+    setVisilibityGroupListPopUp(false)
+    setEditPressed(false)
   }, [group]);
 
   const handleSelectionChange = (variation) => {
@@ -36,11 +50,48 @@ const groupsFilteredPopUp = groups.slice(0, idx).concat(groups.slice(idx + 1))
 
   return (
     <div className={styles.NameGroupCard}>
-      <div className={styles.indexContainer}> 
-        {idx} 
-        <div> {idx+1} of {groups.length} </div>
+      <div className={styles.indexContainer}>
+        {idx}
+        <div>
+          {" "}
+          {idx + 1} of {groups.length}{" "}
+        </div>
       </div>
-      <div className={styles.standardName}>{group.std_name.toUpperCase()}</div>
+
+      <div className={styles.groupNameContainer}>
+
+        {!editPressed &&
+          <div className={styles.standardName}>
+            {groupName.toUpperCase()}
+            <CiEdit
+              style={{ marginLeft: "8px" }}
+              size={20}
+              onClick={() => setEditPressed(true)} />
+          </div>
+        }
+
+        {editPressed && (
+          <>
+            <input
+              type="text"
+              value={groupName}
+              className={styles.newGroupName}
+              placeholder="Enter the group name"
+              onChange={(e) => setGroupName(e.target.value.toLowerCase())}
+              autoFocus
+            />
+            <FaCheck
+              size={20}
+              style={{ marginLeft: "8px" }}
+              onClick={() => {
+                setEditPressed(false);
+                changeGroupName(groupName);
+              }}
+            />
+          </>
+        )}
+      </div>
+
       <div style={{ marginLeft: "10px" }}>
         {" "}
         There are <b>{numberOfVariations}</b> different variations.
@@ -69,6 +120,7 @@ const groupsFilteredPopUp = groups.slice(0, idx).concat(groups.slice(idx + 1))
                 if (selectedVariations.length === 0) {
                   alert("Please select at least one variation");
                 } else {
+                  setOperation(selectedVariations.length === numberOfVariations ? "move_all" : "move_selected");
                   setVisilibityGroupListPopUp(true);
                 }
               }}
@@ -83,9 +135,7 @@ const groupsFilteredPopUp = groups.slice(0, idx).concat(groups.slice(idx + 1))
                 if (selectedVariations.length === 0) {
                   alert("Please select at least one variation");
                 } else {
-                  if (
-                    selectedVariations.length === numberOfVariations
-                  ) {
+                  if (selectedVariations.length === numberOfVariations) {
                     ungroup("ungroup_all", selectedVariations);
                     return;
                   }
@@ -101,23 +151,21 @@ const groupsFilteredPopUp = groups.slice(0, idx).concat(groups.slice(idx + 1))
           {visilibityGroupListPopUp && (
             <GroupListPopUp
               groups={groupsFilteredPopUp}
-              onSelectGroup={(group) => {
-                let operation =
-                  selectedAll || selectedVariations.length === numberOfVariations
-                    ? "move_all"
-                    : "move_selected";
-                moveNamesToOtherGroup(operation, group, selectedVariations);
+              showCreateNew = { operation !== "link_groups" }
+              onSelectGroup={(g) => {
+                if (operation === "link_groups") {
+                  linkWithOtherGroup(g.id);
+                } else {
+                  moveNamesToOtherGroup(operation, g.std_name, selectedVariations);
+                }
+                setOperation(null)
               }}
               onCreateNewGroup={(newGroup) => {
-                let operation =
-                  selectedAll || selectedVariations.length === numberOfVariations
-                    ? "move_new_all"
-                    : "move_new_selected";
-
-                moveNamesToOtherGroup(operation, newGroup, selectedVariations);
+                moveNamesToOtherGroup(`new_${operation}`, newGroup, selectedVariations);
+                setOperation(null)
               }}
               onCloseButtonPressed={() => {
-                setSelectedAll(false);
+                setOperation(null);
                 setSelectedVariations([]);
                 setVisilibityGroupListPopUp(false);
               }}
@@ -129,8 +177,8 @@ const groupsFilteredPopUp = groups.slice(0, idx).concat(groups.slice(idx + 1))
               className={styles.button}
               style={{ backgroundColor: "#4c96af" }}
               onClick={() => {
-                setSelectedAll(true);
                 setSelectedVariations(group.name_variations);
+                setOperation("move_all");
                 setVisilibityGroupListPopUp(true);
               }}
             >
@@ -148,13 +196,25 @@ const groupsFilteredPopUp = groups.slice(0, idx).concat(groups.slice(idx + 1))
             </button>
           </div>
 
-          <div className={styles.doneButton}>
+          <div className={styles.buttonContainer}>
+            <button
+              className={styles.buttonSecondary}
+              onClick={() => {
+                setOperation("link_groups");
+                setVisilibityGroupListPopUp(true);
+              }}
+            >
+              LINK WITH OTHER GROUP
+            </button>
+          </div>
+
+          <div className={styles.buttonContainer}>
             <button
               className={styles.button}
               onClick={() => {
-                setDone(true)
-                saveDone(true)
-            }}
+                setDone(true);
+                saveDone(true);
+              }}
             >
               MARK AS DONE
             </button>
@@ -163,13 +223,13 @@ const groupsFilteredPopUp = groups.slice(0, idx).concat(groups.slice(idx + 1))
       )}
 
       {done && (
-        <div className={styles.doneButton}>
+        <div className={styles.buttonContainer}>
           <button
             className={styles.button}
             style={{ backgroundColor: "#2f9633" }}
             onClick={() => {
-                setDone(false)
-                saveDone(false)
+              setDone(false);
+              saveDone(false);
             }}
           >
             NOT DONE?
@@ -184,6 +244,8 @@ NameGroupCard.defaultProps = {
   groups: [],
   idx: 0,
   group: {
+    id: -1,
+    resolved: false,
     std_name: "empty",
     name_variations: [],
   },
