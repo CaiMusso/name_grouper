@@ -1,8 +1,8 @@
 .NameGroupCard {
   display: flex;
   flex-direction: column;
-  height: 98%;
-  width: 500px;
+  height: 100%;
+  width: 450px;
   border: 2px solid #393830;
   border-radius: 10px;
 }
@@ -19,23 +19,24 @@
 
 .variations {
   margin: 10px;
-  flex: 1 1 80%;
+  height: 300px;
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
   border: 1px solid black;
   border-radius: 10px;
+  overflow-y: scroll;
 }
 
 .variation {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 5px;
+  margin: 3px;
 }
 
 .actionButtons {
-  flex: 1 1 10%;
+  height: 40px;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -43,9 +44,13 @@
 
 .mergeButton,
 .buttonContainer {
-  flex: 1 1 10%;
+  height: 40px;
   display: flex;
   justify-content: center;
+}
+
+.mergeButton {
+  margin-top: 10px;
 }
 
 .button {
@@ -53,6 +58,7 @@
   margin-top: 5px;
   margin-bottom: 5px;
   width: 100%;
+  height: 32px;
   padding: 5px;
   border: none;
   border-radius: 5px;
@@ -70,6 +76,7 @@
   margin-top: 5px;
   margin-bottom: 5px;
   width: 100%;
+  height: 32px;
   padding: 5px;
   border: 1px solid #4caf50;
   border-radius: 5px;
@@ -84,7 +91,7 @@
 
 .indexContainer {
   margin: 10px;
-  margin-bottom: 0;
+  margin-bottom: -7px;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -108,4 +115,49 @@
   align-items: center;
   align-content: center;
   flex-wrap: nowrap;
+}
+
+.nameVariation {
+  padding: 5px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  border-radius: 5px;
+  width: 100%;
+  font-size: 15px;
+}
+
+.nameVariation:hover {
+  background-color: #c0d7bb5a;
+}
+
+.nameVariationSelected {
+  padding: 5px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  border-radius: 5px;
+  width: 100%;
+  font-size: 15px;
+  background-color: #c0d7bb5a;
+}
+
+.checkbox {
+  margin: 3px;
+  margin-right: 10px;
+  margin-left: 8px;
+}
+
+.editButton {
+  display: flex;
+  padding: 3px;
+  border-radius: 5px;
+  margin-left: 8px;
+  width: 20px;
+  height: 20px;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+
+.editButton:hover {
+  border: 1px solid black;
 }

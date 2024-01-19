@@ -1,0 +1,112 @@
+.infoCard {
+  padding-top: 5px;
+  width: 350px;
+  height: calc(98% - 30px);
+  display: flex;
+  justify-content: flex-start;
+  align-items: stretch;
+  border: 2px solid #393830;
+  border-radius: 10px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-content: center;
+}
+
+.miniCard {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-content: flex-start;
+  justify-content: center;
+  align-items: flex-start;
+  margin: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding: 5px;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
+.miniCard:hover {
+  background-color: #c0d7bb5a;
+}
+
+.key{
+  margin: 3px;
+  margin-top: 5px;
+font-size: 14px;
+font-weight: 600;
+}
+
+.value {
+  margin: 3px;
+  font-size: 13px;
+}
+
+.title {
+  display: flex;
+  font-size: 20px;
+  font-weight: 600;
+  margin: 10px;
+  margin-top: 15px;
+  justify-content: center;
+  align-items: center;
+}
+
+.results_info {
+  margin: 10px;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.buttonContainer {
+  width: 100%;
+  display: flex;
+  position: unset;
+  bottom: 10px;
+  right: 10px;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.noInfo {
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  margin-top: 5px;
+  margin-bottom: 7px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  align-content: center;
+  flex-wrap: wrap;
+}
+
+.dropdownDiv {
+  width: 130px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.inputDiv {
+  width: 150px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+select, input {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+

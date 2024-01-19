@@ -17,7 +17,7 @@ export function NavigationBar(props) {
         <div
           key={index}
           className={resolvedMap[index] ? styles.card_resolved : styles.card}
-          onClick={() => props.setDisplayedIndex(index)}
+          onClick={() => props.setNameToDisplay(group.std_name)}
         >
           <div className={styles.card_text}>
             <div style={{ width: "100px", fontSize: "12px" }}>{index}</div>
@@ -34,5 +34,5 @@ export function NavigationBar(props) {
 
 NavigationBar.defaultProps = {
   groups: [],
-  setDisplayedIndex: () => console.log("Missing props in NavigationBar"),
+  setNameToDisplay: () => console.log("Missing props in NavigationBar"),
 };

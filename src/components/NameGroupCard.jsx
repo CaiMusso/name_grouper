@@ -11,6 +11,8 @@ export function NameGroupCard(props) {
     group,
     numberOfVariations,
     changeGroupName,
+    selectVariationForInfo,
+    variationsToResultCount,
     moveNamesToOtherGroup,
     ungroup,
     linkWithOtherGroup,
@@ -19,7 +21,8 @@ export function NameGroupCard(props) {
 
   const [done, setDone] = useState(group.resolved);
   const [selectedVariations, setSelectedVariations] = useState([]);
-  const [visilibityGroupListPopUp, setVisilibityGroupListPopUp] = useState(false);
+  const [visilibityGroupListPopUp, setVisilibityGroupListPopUp] =
+    useState(false);
   const [operation, setOperation] = useState(null);
 
   const groupsFilteredPopUp = groups
@@ -28,16 +31,37 @@ export function NameGroupCard(props) {
 
   const [groupName, setGroupName] = useState(group.std_name);
   const [editPressed, setEditPressed] = useState(false);
+  const [selectedStyleIndex, setSelectedStyleIndex] = useState(-1);
+  const totalInfoResults = computeTotalInfoResults();
 
-  /* RESET when group changes */
-  useEffect(() => {
+  function resetCard() {
     setSelectedVariations([]);
     setOperation(null);
     setDone(group.resolved);
     setGroupName(group.std_name);
-    setVisilibityGroupListPopUp(false)
-    setEditPressed(false)
+    setVisilibityGroupListPopUp(false);
+    setEditPressed(false);
+    setSelectedStyleIndex(-1);
+  }
+  /* RESET when group changes */
+  useEffect(() => {
+    resetCard()
   }, [group]);
+
+  function computeTotalInfoResults() {
+    if (!(group && group.name_variations)) {
+      return 0;
+    }
+
+    let total = 0;
+    Object.keys(variationsToResultCount).forEach((variation) => {
+      if (group.name_variations.includes(variation)) {
+        total += variationsToResultCount[variation];
+      }
+    });
+
+    return total;
+  }
 
   const handleSelectionChange = (variation) => {
     setSelectedVariations((prevSelected) => {
@@ -59,16 +83,14 @@ export function NameGroupCard(props) {
       </div>
 
       <div className={styles.groupNameContainer}>
-
-        {!editPressed &&
+        {!editPressed && (
           <div className={styles.standardName}>
             {groupName.toUpperCase()}
-            <CiEdit
-              style={{ marginLeft: "8px" }}
-              size={20}
-              onClick={() => setEditPressed(true)} />
+            <div className={styles.editButton}>
+              <CiEdit size={20} onClick={() => setEditPressed(true)} />
+            </div>
           </div>
-        }
+        )}
 
         {editPressed && (
           <>
@@ -92,20 +114,85 @@ export function NameGroupCard(props) {
         )}
       </div>
 
+      {group.links_to_verify.length > 0 && (
+        <div style={{ marginLeft: "10px", marginBottom: "3px" }}>
+          Linked with <b>{group.links_to_verify.length}</b> other groups.
+        </div>
+      )}
+
       <div style={{ marginLeft: "10px" }}>
-        {" "}
-        There are <b>{numberOfVariations}</b> different variations.
+        There are <b>{numberOfVariations}</b> name variations and{" "}
+        <b>{totalInfoResults}</b> mentions.
       </div>
+
       <div className={styles.variations}>
         {group.name_variations.map((variation, index) => (
           <div key={index} className={styles.variation}>
             <input
               type="checkbox"
               id={`checkbox-${index}`}
+              className={styles.checkbox}
               checked={selectedVariations.includes(variation)}
               onChange={() => handleSelectionChange(variation)}
             />
-            <label htmlFor={`checkbox-${index}`}>{variation}</label>
+
+            {index === selectedStyleIndex && (
+              <div
+                className={styles.nameVariationSelected}
+                onClick={() => {
+                  if (
+                    Object.keys(variationsToResultCount).length > 0 &&
+                    variationsToResultCount[variation] > 0
+                  ) {
+                    setSelectedStyleIndex(index);
+                    selectVariationForInfo(variation);
+                  } else {
+                    alert(`No results for variation: ${variation}`);
+                  }
+                }}
+              >
+                <label style={{ width: "100%" }} htmlFor={`checkbox-${index}`}>
+                  {Object.keys(variationsToResultCount).length > 0 && (
+                    <>
+                      {variation}
+                      {Object.keys(variationsToResultCount).length > 0 && (
+                        <>
+                          {" "}
+                          {"("} {variationsToResultCount[variation]} {")"}
+                        </>
+                      )}
+                    </>
+                  )}
+                </label>
+              </div>
+            )}
+
+            {index !== selectedStyleIndex && (
+              <div
+                className={styles.nameVariation}
+                onClick={() => {
+                  if (
+                    Object.keys(variationsToResultCount).length > 0 &&
+                    variationsToResultCount[variation] > 0
+                  ) {
+                    setSelectedStyleIndex(index);
+                    selectVariationForInfo(variation);
+                  } else {
+                    alert(`No results for variation: ${variation}`);
+                  }
+                }}
+              >
+                <label style={{ width: "100%" }} htmlFor={`checkbox-${index}`}>
+                  {variation}
+                  {Object.keys(variationsToResultCount).length > 0 && (
+                    <>
+                      {" "}
+                      {"("} {variationsToResultCount[variation]} {")"}
+                    </>
+                  )}
+                </label>
+              </div>
+            )}
           </div>
         ))}
       </div>
@@ -120,7 +207,11 @@ export function NameGroupCard(props) {
                 if (selectedVariations.length === 0) {
                   alert("Please select at least one variation");
                 } else {
-                  setOperation(selectedVariations.length === numberOfVariations ? "move_all" : "move_selected");
+                  setOperation(
+                    selectedVariations.length === numberOfVariations
+                      ? "move_all"
+                      : "move_selected"
+                  );
                   setVisilibityGroupListPopUp(true);
                 }
               }}
@@ -137,10 +228,12 @@ export function NameGroupCard(props) {
                 } else {
                   if (selectedVariations.length === numberOfVariations) {
                     ungroup("ungroup_all", selectedVariations);
+                    resetCard()
                     return;
                   }
 
                   ungroup("ungroup", selectedVariations);
+                  resetCard()
                 }
               }}
             >
@@ -151,18 +244,28 @@ export function NameGroupCard(props) {
           {visilibityGroupListPopUp && (
             <GroupListPopUp
               groups={groupsFilteredPopUp}
-              showCreateNew = { operation !== "link_groups" }
+              showCreateNew={operation !== "link_groups"}
               onSelectGroup={(g) => {
                 if (operation === "link_groups") {
-                  linkWithOtherGroup(g.id);
+                  linkWithOtherGroup(g.linkID);
+                  resetCard()
                 } else {
-                  moveNamesToOtherGroup(operation, g.std_name, selectedVariations);
+                  moveNamesToOtherGroup(
+                    operation,
+                    g.std_name,
+                    selectedVariations
+                  );
+                  resetCard()
                 }
-                setOperation(null)
+                setOperation(null);
               }}
               onCreateNewGroup={(newGroup) => {
-                moveNamesToOtherGroup(`new_${operation}`, newGroup, selectedVariations);
-                setOperation(null)
+                moveNamesToOtherGroup(
+                  `new_${operation}`,
+                  newGroup,
+                  selectedVariations
+                );
+                resetCard()
               }}
               onCloseButtonPressed={() => {
                 setOperation(null);
@@ -190,6 +293,7 @@ export function NameGroupCard(props) {
               style={{ backgroundColor: "#af694c" }}
               onClick={() => {
                 ungroup("ungroup_all", group.name_variations);
+                resetCard()
               }}
             >
               UNGROUP ALL
@@ -214,6 +318,7 @@ export function NameGroupCard(props) {
               onClick={() => {
                 setDone(true);
                 saveDone(true);
+                resetCard()
               }}
             >
               MARK AS DONE
@@ -230,6 +335,7 @@ export function NameGroupCard(props) {
             onClick={() => {
               setDone(false);
               saveDone(false);
+              resetCard()
             }}
           >
             NOT DONE?
@@ -244,10 +350,11 @@ NameGroupCard.defaultProps = {
   groups: [],
   idx: 0,
   group: {
-    id: -1,
+    linkID: -1,
     resolved: false,
     std_name: "empty",
     name_variations: [],
+    links_to_verify: [],
   },
   numberOfVariations: 0,
 };
