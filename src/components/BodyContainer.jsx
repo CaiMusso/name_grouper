@@ -16,7 +16,8 @@ export function BodyContainer(props) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedNameVariationInfo, setSelectedNameVariationInfo] =
     useState(null);
-  const variationsToResultCount = setPerVariationNumberOfResults(variationsInfo);
+  const variationsToResultCount =
+    setPerVariationNumberOfResults(variationsInfo);
   const [displayInfo, setDisplayInfo] = useState(false);
 
   function setGroups(groups) {
@@ -98,20 +99,29 @@ export function BodyContainer(props) {
     setGroups(groupsToDownloadCopy);
   }
 
-  function moveNamesToOtherGroup(operation, groupName, variations) {
+  function moveNamesToOtherGroup(operation, gID, groupName, variations) {
     let groupsToDownloadCopy = [...groupsToDownload];
-    const groupIndex = groupsToDownloadCopy.findIndex(
-      (group) => group.std_name === groupName
+    let groupIndex = groupsToDownloadCopy.findIndex(
+      (group) => group.linkID === gID
     );
 
+    let groupAlreadyExists = false
     if (operation.includes("new_")) {
+      const tryFindIndex = groupsToDownloadCopy.findIndex((g) => g.std_name === groupName)
+      groupAlreadyExists = tryFindIndex !== -1;
+      if (groupAlreadyExists) {
+        groupIndex = tryFindIndex;
+      }
+    }
+
+    if (operation.includes("new_") && !groupAlreadyExists) {
       const newGroup = {
         linkID: groupsToDownloadCopy.length,
         resolved: false,
         std_name: groupName,
         name_variations: variations,
-        links_to_verify: [] 
-      }
+        links_to_verify: [],
+      };
 
       groupsToDownloadCopy = [
         ...groupsToDownloadCopy.slice(0, currentIndex + 1),
@@ -179,9 +189,10 @@ export function BodyContainer(props) {
               setInfoForNameVariation(nameVariation)
             }
             variationsToResultCount={variationsToResultCount}
-            moveNamesToOtherGroup={(operation, groupName, variations) =>
+            moveNamesToOtherGroup={(operation, gID, groupName, variations) =>
               moveNamesToOtherGroup(
                 operation,
+                gID,
                 groupName.toLowerCase(),
                 variations
               )

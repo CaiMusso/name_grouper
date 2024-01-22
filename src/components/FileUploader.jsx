@@ -15,6 +15,7 @@ export function FileUploader(props) {
     reader.onload = (upload) => {
       try {
         const content = JSON.parse(upload.target.result);
+        
         const isValid = validateContent(content);
         if (!isValid) {
           alert(
@@ -23,10 +24,7 @@ export function FileUploader(props) {
           window.location.reload();
         }
 
-        const hasUngrouped = content.some(
-          (item) => item.std_name === "*ungrouped*"
-        );
-
+        const hasUngrouped = content.some(item => item.std_name === "*ungrouped*");
         if (!hasUngrouped) {
           content.push({
             resolved: false,
@@ -35,18 +33,25 @@ export function FileUploader(props) {
           });
         }
 
-        content.push({
-          resolved: false,
-          std_name: "*unrelevant*",
-          name_variations: [],
-        });
+        const hasUnrelevant = content.some(item => item.std_name === "*unrelevant*");
+        if (!hasUnrelevant) {
+          content.push({
+            resolved: false,
+            std_name: "*unrelevant*",
+            name_variations: [],
+          });
+        }
 
-        const groupsDataset = content.map((group, index) => {
-          return { linkID: index, ...group, links_to_verify: [] };
-        });
+        let groupsDataset = [...content];
+        if (!Object.keys(groupsDataset[0]).includes('linkID')) {
+          groupsDataset = content.map((group, index) => {
+            return { linkID: index, ...group, links_to_verify: [] };
+          });
+        }
 
         setGroupsFromFile(groupsDataset);
         setCanStart(true);
+
       } catch (error) {
         console.error("Error reading JSON:", error);
         alert(

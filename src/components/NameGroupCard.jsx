@@ -45,8 +45,8 @@ export function NameGroupCard(props) {
   }
   /* RESET when group changes */
   useEffect(() => {
-    resetCard()
-  }, [group]);
+    resetCard();
+  }, [group, resetCard]);
 
   function computeTotalInfoResults() {
     if (!(group && group.name_variations)) {
@@ -146,8 +146,6 @@ export function NameGroupCard(props) {
                   ) {
                     setSelectedStyleIndex(index);
                     selectVariationForInfo(variation);
-                  } else {
-                    alert(`No results for variation: ${variation}`);
                   }
                 }}
               >
@@ -177,8 +175,6 @@ export function NameGroupCard(props) {
                   ) {
                     setSelectedStyleIndex(index);
                     selectVariationForInfo(variation);
-                  } else {
-                    alert(`No results for variation: ${variation}`);
                   }
                 }}
               >
@@ -228,12 +224,12 @@ export function NameGroupCard(props) {
                 } else {
                   if (selectedVariations.length === numberOfVariations) {
                     ungroup("ungroup_all", selectedVariations);
-                    resetCard()
+                    resetCard();
                     return;
                   }
 
                   ungroup("ungroup", selectedVariations);
-                  resetCard()
+                  resetCard();
                 }
               }}
             >
@@ -248,24 +244,26 @@ export function NameGroupCard(props) {
               onSelectGroup={(g) => {
                 if (operation === "link_groups") {
                   linkWithOtherGroup(g.linkID);
-                  resetCard()
+                  resetCard();
                 } else {
                   moveNamesToOtherGroup(
                     operation,
+                    g.linkID,
                     g.std_name,
                     selectedVariations
                   );
-                  resetCard()
+                  resetCard();
                 }
                 setOperation(null);
               }}
               onCreateNewGroup={(newGroup) => {
                 moveNamesToOtherGroup(
                   `new_${operation}`,
+                  -1,
                   newGroup,
                   selectedVariations
                 );
-                resetCard()
+                resetCard();
               }}
               onCloseButtonPressed={() => {
                 setOperation(null);
@@ -293,7 +291,7 @@ export function NameGroupCard(props) {
               style={{ backgroundColor: "#af694c" }}
               onClick={() => {
                 ungroup("ungroup_all", group.name_variations);
-                resetCard()
+                resetCard();
               }}
             >
               UNGROUP ALL
@@ -318,7 +316,7 @@ export function NameGroupCard(props) {
               onClick={() => {
                 setDone(true);
                 saveDone(true);
-                resetCard()
+                resetCard();
               }}
             >
               MARK AS DONE
@@ -335,7 +333,7 @@ export function NameGroupCard(props) {
             onClick={() => {
               setDone(false);
               saveDone(false);
-              resetCard()
+              resetCard();
             }}
           >
             NOT DONE?

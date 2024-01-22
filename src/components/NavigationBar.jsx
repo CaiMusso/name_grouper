@@ -34,5 +34,4 @@ export function NavigationBar(props) {
 
 NavigationBar.defaultProps = {
   groups: [],
-  setNameToDisplay: () => console.log("Missing props in NavigationBar"),
 };
