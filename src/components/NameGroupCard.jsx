@@ -46,7 +46,7 @@ export function NameGroupCard(props) {
   /* RESET when group changes */
   useEffect(() => {
     resetCard();
-  }, [group, resetCard]);
+  }, [group]);
 
   function computeTotalInfoResults() {
     if (!(group && group.name_variations)) {
